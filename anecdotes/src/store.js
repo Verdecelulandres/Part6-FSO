@@ -38,7 +38,7 @@ const useAnecdoteStore = create((set) => ({
         anecdotes: [...state.anecdotes, asObject(anec)]
       }
     )),
-    setFilter: (str) => set(state => ({ 
+    setFilter: (str) => set(() => ({ 
       filterString: str
      }))
   },
