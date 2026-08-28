@@ -1,7 +1,7 @@
 import { useNotification } from "../store"
 
 const Notification = () => {
-  const message = useNotification();
+  const { message } = useNotification();
 
   if (!message) {
     return null;
