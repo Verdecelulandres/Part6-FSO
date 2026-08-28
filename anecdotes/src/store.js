@@ -37,9 +37,20 @@ const useAnecdoteStore = create((set, get) => ({
   },
 }));
 
+const useNotificationStore = create((set) => ({
+  message: '',
+  type: '',
+  actions: {
+    setMessage: msg => set(() => ({ message: msg }))
+  }
+}));
+
 export const useAnecdotes = () => {
   const anecdotes = useAnecdoteStore((state) => state.anecdotes);
   const filterString = useAnecdoteStore((state) => state.filterString);
   return anecdotes.filter(a => a.content.includes(filterString));
 }
 export const useAnecdoteActions = () => useAnecdoteStore(state => state.actions);
+export const useNotification = () => useNotificationStore(state => state.message);
+export const useNotificationActions = () => useNotificationStore(state => state.actions);
+
