@@ -29,6 +29,11 @@ const useAnecdoteStore = create((set) => ({
             : a
         )
       }
+    )),
+    add: (anec) => set(state => (
+      {
+        anecdotes: [...state.anecdotes, asObject(anec)]
+      }
     ))
   },
 }));
