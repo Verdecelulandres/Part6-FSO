@@ -1,5 +1,5 @@
 
-import { create } from 'zustand'
+import { create } from 'zustand';
 
 const anecdotesAtStart = [
   'If it hurts, do it more often',
@@ -8,19 +8,30 @@ const anecdotesAtStart = [
   'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
   'Premature optimization is the root of all evil.',
   'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
-]
+];
 
-const getId = () => (100000 * Math.random()).toFixed(0)
+const getId = () => (100000 * Math.random()).toFixed(0);
 
 const asObject = anecdote => ({
   content: anecdote,
   id: getId(),
   votes: 0
-})
+});
 
 const useAnecdoteStore = create((set) => ({
   anecdotes: anecdotesAtStart.map(asObject),
-  actions: {},
-}))
+  actions: {
+    vote: (id) => set(state => (
+      {
+        anecdotes: state.anecdotes.map(
+          a => a.id === id
+            ? { ...a, votes: ++a.votes }
+            : a
+        )
+      }
+    ))
+  },
+}));
 
-export const useAnecdotes = () => useAnecdoteStore((state) => state.anecdotes)
+export const useAnecdotes = () => useAnecdoteStore((state) => state.anecdotes);
+export const useAnecdoteActions = () => useAnecdoteStore(state => state.actions);
