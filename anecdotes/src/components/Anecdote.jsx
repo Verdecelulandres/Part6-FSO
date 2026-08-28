@@ -6,12 +6,12 @@ const Anecdote = ({ anecdote }) => {
 
   const handleVote = ({ id, content }) => {
     vote(id);
-    display(`You voted '${content}'`);
+    display(`you voted '${content}'`);
   }
 
   const handleDelete = ({ id, content }) => {
     remove(id);
-    display(`You deleted '${content}'`);
+    display(`you deleted '${content}'`);
   }
 
   return (

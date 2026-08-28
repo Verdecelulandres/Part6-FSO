@@ -14,10 +14,9 @@ const App = () => {
 
   return (
     <div>
-      <h1>Anecdotes</h1>
+      <h2>Anecdotes</h2>
       <Notification />
       <Filter />
-      <h2>Anecdotes</h2>
       <AnecdoteList />
       <AnecdoteForm />
     </div>
