@@ -20,23 +20,37 @@ beforeEach(() => {
 
 describe('When the backend has notes', () => {
   const mockAnecdotes = [
-      { id: 1, content: 'Test1', votes: 0 },
-      { id: 2, content: 'Test2', votes: 0 },
-    ];
+    { id: 1, content: 'Test1', votes: 0 },
+    { id: 2, content: 'Test2', votes: 0 },
+  ];
 
-  beforeEach(() => {
+  beforeEach(async () => {
     anecdoteService.getAll.mockResolvedValue(mockAnecdotes);
-  });
-
-  test('initialize correctly grabs anecdotes from server', async () => {
     const { result } = renderHook(() => useAnecdoteActions());
 
     await act(async () => {
       await result.current.initialize();
     });
+  });
+
+  test('initialize correctly grabs anecdotes from server', () => {
 
     const { result: retievedAnecdotes } = renderHook(() => useAnecdotes());
     expect(retievedAnecdotes.current).toEqual(mockAnecdotes);
+  });
+
+  test('voting increase number of votes', async () => {
+    const mockVote = { id: 2, content: 'Test2', votes: 1 };
+    anecdoteService.update.mockResolvedValue(mockVote);
+
+    const { result } = renderHook(() => useAnecdoteActions());
+
+    await act(async () => {
+      await result.current.vote(2);
+    });
+
+    const { result: retievedAnecdotes } = renderHook(() => useAnecdotes());
+    expect(retievedAnecdotes.current.find(a => a.id === 2)).toEqual(mockVote);
   });
 
 });
