@@ -1,5 +1,5 @@
 import { describe, test, expect, beforeEach, vi } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
+import { renderHook, act, render, screen } from '@testing-library/react';
 
 vi.mock('./services/anecdotes', () => ({
   default: {
@@ -12,6 +12,7 @@ vi.mock('./services/anecdotes', () => ({
 
 import anecdoteService from './services/anecdotes';
 import useAnecdoteStore, { useAnecdoteActions, useAnecdotes } from './store';
+import AnecdoteList from './components/AnecdoteList';
 
 beforeEach(() => {
   useAnecdoteStore.setState({ anecdotes: [], filterString: '' });
@@ -31,12 +32,22 @@ describe('When the backend has notes', () => {
     await act(async () => {
       await result.current.initialize();
     });
+
   });
 
   test('initialize correctly grabs anecdotes from server', () => {
+    render(<AnecdoteList />);
+    // const anecdotes = screen.queryAllByTestId("anecdote");
+    // screen.debug(anecdotes[0]);
+    const anecdotes = screen.getAllByText(/^Test\d/);
 
+    // screen.debug(anecdotes);
+    
     const { result: retievedAnecdotes } = renderHook(() => useAnecdotes());
     expect(retievedAnecdotes.current).toEqual(mockAnecdotes);
+    expect(anecdotes).toHaveLength(2);
+    expect(anecdotes[0].innerHTML).toEqual('Test1');
+    expect(anecdotes[1].innerHTML).toEqual('Test2');
   });
 
 
