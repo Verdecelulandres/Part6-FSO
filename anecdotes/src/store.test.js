@@ -51,11 +51,21 @@ describe('When the backend has notes', () => {
         await result.current.vote(2);
       });
     });
-    test('voting increase number of votes', async () => {
+    test('voting increase number of votes', () => {
 
       const { result: retievedAnecdotes } = renderHook(() => useAnecdotes());
 
       expect(retievedAnecdotes.current.find(a => a.id === 2)).toEqual(mockVote);
+    });
+
+    test('anecdotes are sorting according to votes', () => {
+      const mockSortedAnecdotes = [
+        { id: 2, content: 'Test2', votes: 1 },
+        { id: 1, content: 'Test1', votes: 0 },
+      ];
+      const { result: retievedAnecdotes } = renderHook(() => useAnecdotes());
+
+      expect(retievedAnecdotes.current).toEqual(mockSortedAnecdotes);
     });
 
   });
