@@ -39,15 +39,15 @@ describe('When the backend has notes', () => {
     render(<AnecdoteList />);
     // const anecdotes = screen.queryAllByTestId("anecdote");
     // screen.debug(anecdotes[0]);
-    const anecdotes = screen.getAllByText(/^Test\d/);
+    const anecdoteContents = screen.getAllByText(/^Test\d/);
 
     // screen.debug(anecdotes);
 
     const { result: retievedAnecdotes } = renderHook(() => useAnecdotes());
     expect(retievedAnecdotes.current).toEqual(mockAnecdotes);
-    expect(anecdotes).toHaveLength(2);
-    expect(anecdotes[0].innerHTML).toEqual('Test1');
-    expect(anecdotes[1].innerHTML).toEqual('Test2');
+    expect(anecdoteContents).toHaveLength(2);
+    expect(anecdoteContents[0].innerHTML).toEqual('Test1');
+    expect(anecdoteContents[1].innerHTML).toEqual('Test2');
   });
 
 
@@ -79,11 +79,33 @@ describe('When the backend has notes', () => {
       const { result: retievedAnecdotes } = renderHook(() => useAnecdotes());
 
       expect(retievedAnecdotes.current).toEqual(mockSortedAnecdotes);
-      screen.debug();
-      const anecdotes = screen.getAllByText(/^Test\d/);
-      expect(anecdotes[0].innerHTML).toEqual('Test2');
-      expect(anecdotes[1].innerHTML).toEqual('Test1');
+
+      const anecdoteContents = screen.getAllByText(/^Test\d/);
+      expect(anecdoteContents[0].innerHTML).toEqual('Test2');
+      expect(anecdoteContents[1].innerHTML).toEqual('Test1');
     });
 
+  });
+
+  describe('When filtering', () => {
+    test('only return filtered anecdotes', async () => {
+      const mockFiltered = [{ id: 2, content: 'Test2', votes: 2 }];
+      const { result } = renderHook(() => useAnecdoteActions());
+
+      await act(async () => {
+        await result.current.setFilter('2');
+      });
+
+      const { result: retievedAnecdotes } = renderHook(() => useAnecdotes());
+
+      expect(retievedAnecdotes.current).toEqual(mockFiltered);
+
+      render(<AnecdoteList />);
+
+      const anecdoteContents = screen.getAllByText(/^Test\d/);
+      
+      expect(anecdoteContents).toHaveLength(1);
+      expect(anecdoteContents[0].innerHTML).toEqual('Test2');
+    });
   });
 });
