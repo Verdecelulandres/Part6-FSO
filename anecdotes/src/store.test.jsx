@@ -42,7 +42,7 @@ describe('When the backend has notes', () => {
     const anecdotes = screen.getAllByText(/^Test\d/);
 
     // screen.debug(anecdotes);
-    
+
     const { result: retievedAnecdotes } = renderHook(() => useAnecdotes());
     expect(retievedAnecdotes.current).toEqual(mockAnecdotes);
     expect(anecdotes).toHaveLength(2);
@@ -70,6 +70,8 @@ describe('When the backend has notes', () => {
     });
 
     test('anecdotes are sorting according to votes', () => {
+      render(<AnecdoteList />);
+
       const mockSortedAnecdotes = [
         { id: 2, content: 'Test2', votes: 1 },
         { id: 1, content: 'Test1', votes: 0 },
@@ -77,6 +79,10 @@ describe('When the backend has notes', () => {
       const { result: retievedAnecdotes } = renderHook(() => useAnecdotes());
 
       expect(retievedAnecdotes.current).toEqual(mockSortedAnecdotes);
+      screen.debug();
+      const anecdotes = screen.getAllByText(/^Test\d/);
+      expect(anecdotes[0].innerHTML).toEqual('Test2');
+      expect(anecdotes[1].innerHTML).toEqual('Test1');
     });
 
   });
