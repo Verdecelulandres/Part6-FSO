@@ -4,10 +4,10 @@ import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 
 const App = () => {
-  const { anecdotes, isPending, isError } = useAnecdotes();
+  const { anecdotes, isPending, isError, vote } = useAnecdotes();
 
-  const handleVote = (anecdote) => {
-    console.log(anecdote)
+  const handleVote = async (anecdote) => {
+    vote(anecdote)
   }
 
   if (isPending) {
