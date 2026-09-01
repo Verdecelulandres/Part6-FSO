@@ -9,10 +9,12 @@ export const useAnecdotes = () => {
         throw new Error('Failed to fetch anecdotes')
       }
       return await response.json()
-    }
+    },
+    retry: 1
   })
   return {
     anecdotes: result.data,
-    isPending: result.isPending
+    isPending: result.isPending,
+    isError: result.isError
   }
 }

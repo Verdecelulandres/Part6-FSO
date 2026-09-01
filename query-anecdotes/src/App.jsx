@@ -4,7 +4,7 @@ import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 
 const App = () => {
-  const { anecdotes, isPending } = useAnecdotes();
+  const { anecdotes, isPending, isError } = useAnecdotes();
 
   const handleVote = (anecdote) => {
     console.log(anecdote)
@@ -16,6 +16,12 @@ const App = () => {
         Loading anecdotes ...
       </p>
     );
+  }
+
+  if (isError) {
+    return(
+      <p>anecdote service not available due to problems in server</p>
+    )
   }
 
   return (
