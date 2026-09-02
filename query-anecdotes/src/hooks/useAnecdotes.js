@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getAll, createNew, update } from '../requests';
+import useNotification from "./useNotification";
 
 export const useAnecdotes = () => {
   const queryClient = useQueryClient();
@@ -10,11 +11,17 @@ export const useAnecdotes = () => {
     retry: 1
   });
 
+  const { displayMessage } = useNotification();
+
   const newAnecdoteMutation = useMutation({
     mutationFn: createNew,
     onSuccess: (newAnecdote) => {
       const anecdotes = queryClient.getQueryData(['anecdotes']);
       queryClient.setQueryData(['anecdotes'], anecdotes.concat(newAnecdote));
+      displayMessage(`anecdote '${newAnecdote.content}' created`);
+    },
+    onError: (error) => {      
+      displayMessage(error.message);
     }
   });
 
@@ -22,12 +29,14 @@ export const useAnecdotes = () => {
     mutationFn: update,
     onSuccess: (votedAnecdote) => {
       const anecdotes = queryClient.getQueryData(['anecdotes']);
-      
+
       queryClient.setQueryData(['anecdotes'], anecdotes.map(
         a => a.id === votedAnecdote.id
           ? votedAnecdote
           : a
       ));
+
+      displayMessage(`anecdote '${votedAnecdote.content}' voted`);
     }
   });
 
