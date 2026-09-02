@@ -1,10 +1,9 @@
 import { useAnecdotes } from "../hooks/useAnecdotes";
-import { useContext } from "react";
-import NotificationContext from "../NotificationContext";
+import useNotification from "../hooks/useNotification";
 
 
 const AnecdoteForm = () => {
-  const { displayMessage } = useContext(NotificationContext);
+  const { displayMessage } = useNotification();
   const { addAnecdote } = useAnecdotes();
 
   const onCreate = async (event) => {
