@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getAll, createNew, update } from '../requests';
-import useNotification from "./useNotification";
+import useNotify from "./useNotify";
 
 export const useAnecdotes = () => {
   const queryClient = useQueryClient();
@@ -11,7 +11,7 @@ export const useAnecdotes = () => {
     retry: 1
   });
 
-  const { displayMessage } = useNotification();
+  const { displayMessage } = useNotify();
 
   const newAnecdoteMutation = useMutation({
     mutationFn: createNew,
